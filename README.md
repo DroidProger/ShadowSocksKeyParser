@@ -21,7 +21,7 @@ Path to shadowsocks config file
   "sslocal.service"
 ],
 ```
-Parameter block for restarting shadowsocks. If shadowsocks is not running as a service, this section may look like this.
+Block of parameters for restarting shadowsocks. If shadowsocks is not running as a service, this section may look like this.
 ```
 "sspath":"/bin/shadowsocks/sslocal",
     "ssrestartcommand":[
