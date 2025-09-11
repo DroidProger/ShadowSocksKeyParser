@@ -30,6 +30,15 @@ Block of parameters for restarting shadowsocks. If shadowsocks is not running as
     ],
 ```
 
+If shadowsocks is running as a service, this section may look like this.
+```
+"sspath":"/bin/systemctl",
+    "ssrestartcommand":[
+        "restart",
+        "sslocal.service"
+    ],
+```
+
 ```
 "ssconfigsectionpath":[
         "servers"
