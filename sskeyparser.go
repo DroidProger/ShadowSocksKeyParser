@@ -374,6 +374,11 @@ func setSsServiceConfig(path string, middle []byte) bool {
 				fmt.Println("Unable to write ss config file:", writeerr)
 				return false
 			}
+			truncerr := file.Truncate(int64(len(newdata)))
+			if truncerr != nil {
+				fmt.Println("Unable to write ss config file:", truncerr)
+				return false
+			}
 		}
 	} else {
 		return false
