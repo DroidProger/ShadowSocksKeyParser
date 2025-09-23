@@ -1,6 +1,11 @@
 # SsKeyParser
 Parser for shadowsocks keys on web pages
 
+#### Key must look like  
+```
+ss://...........#
+```
+
 ### Always backup your worked shadowsocks config.json 
 
 This app is extract shadowsocks keys from web pages and telegramm channels
