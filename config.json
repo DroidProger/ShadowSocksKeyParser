@@ -3,7 +3,7 @@
     "sspath":"/bin/systemctl",
     "ssrestartcommand":[
         "restart",
-        "cups.service"
+        "sslocal.service"
     ],
     "ssconfigsectionpath":[
         "servers"
