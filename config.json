@@ -13,7 +13,7 @@
     "outputfile":"./parsingresult.json",
     "links":[
         {
-            "url":"https://t.me/s/outlinevpn_ru",
+            "url":"https://t.me/some_channel_with_keys",
             "mask":[
                 "ss://"
             ],
@@ -21,12 +21,12 @@
             "parsetoptobot":false 
         },
         {
-            "url":"https://t.me/s/keysOutline",
+            "url":"https://www.some_url_with_keys",
             "mask":[
                 "ss://"
             ],
             "configcount":2,
-            "parsetoptobot":false
+            "parsetoptobot":true
         }
     ],
     "ipcheckserver":"https://ipinfo.io/",
