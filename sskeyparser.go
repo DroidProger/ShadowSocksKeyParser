@@ -37,6 +37,9 @@ type Config struct {
 	SsTimeOutDefault    int32
 	OutputFile          string
 	Links               []Link
+	IpCheckServer       string
+	IpCheckKey          string
+	IpCheckValue        string
 }
 
 type SsConfigs struct {
@@ -52,14 +55,14 @@ type SsServerConf struct {
 	//Mode     string `json:"mode,omitempty"`
 }
 
-func decodeSsServerConfig(str string) {
+func decodeSsServerConfig(str string) bool {
 	var datastr string
 	index := strings.IndexByte(str, '@')
 	if index == -1 { // fully encoded string
 		data, err := base64.StdEncoding.DecodeString(str)
 		if err != nil {
 			fmt.Println("error:", err)
-			return
+			return false
 		}
 		datastr = string(data[:])
 	} else { // encoded only method:password
@@ -67,16 +70,16 @@ func decodeSsServerConfig(str string) {
 		data, err := base64.StdEncoding.DecodeString(shortstr)
 		if err != nil {
 			fmt.Println("error:", err)
-			return
+			return false
 		}
 		datastr = string(data[:]) + str[index:]
 	}
 	errstr := createSsServerConfig(datastr)
 	if errstr != "" {
 		fmt.Println(errstr)
-	} else {
-		
+		return false
 	}
+	return true
 }
 
 func createSsServerConfig(str string) (errstr string) { //, errcode int
@@ -117,6 +120,11 @@ func createSsServerConfig(str string) (errstr string) { //, errcode int
 			return errString //, 3
 		} else {
 			conf.Server = spstr[:index]
+			//check ip
+			if !isIpValid(config.IpCheckServer, conf.Server, config.IpCheckKey, config.IpCheckValue) {
+				return "Ip is invalid"
+			}
+			//
 			i, err := strconv.Atoi(spstr[index+1:])
 			if err != nil {
 				errString := "Invalid format of port " + spstr
@@ -173,18 +181,22 @@ func parseUp(link Link, body string) {
 				_mask := body[i : i+lm]
 				if mask == _mask {
 					c := i + lm
+					var added bool
 					for c <= lastPos {
 						if body[c] == '#' { // || body[c] == '?'
 							str := body[i+lm : c]
 							if mask == "ss://" {
-								decodeSsServerConfig(str)
+								added = decodeSsServerConfig(str)
 								break
 							}
-							
+							// if mask == "vless://"
 						}
 						c++
 					}
-					count = count - 1
+					if added {
+						count = count - 1
+					}
+
 					i = i - 10
 					lastPos = i
 				}
@@ -209,17 +221,22 @@ func parseDown(link Link, body string) {
 				_mask := body[i : i+lm]
 				if mask == _mask {
 					c := i + lm
+					var added bool
 					for c <= lastPos {
 						if body[c] == '#' { // || body[c] == '?'
 							str := body[i+lm : c]
 							if mask == "ss://" {
-								decodeSsServerConfig(str)
+								added = decodeSsServerConfig(str)
 								break
 							}
+							// if mask == "vless://"
 						}
 						c++
 					}
-					count = count - 1
+					if added {
+						count = count - 1
+					}
+
 					i = c
 					//lastPos = i
 				}
@@ -303,7 +320,7 @@ func main() {
 	}
 	var waitgroup sync.WaitGroup
 	resultFile, err := os.Create(config.OutputFile)
-	if err != nil { // 
+	if err != nil { // если возникла ошибка
 		fmt.Println("Unable to create file:", err)
 	}
 	defer resultFile.Close()
@@ -348,7 +365,7 @@ func RestartSs() {
 func setSsServiceConfig(path string, middle []byte) bool {
 	if fileExists(path) {
 		file, err := os.OpenFile(path, os.O_CREATE|os.O_RDWR, os.ModePerm)
-		if err != nil { // 
+		if err != nil { // если возникла ошибка
 			fmt.Println("Unable to open file:", err)
 			return false
 		}

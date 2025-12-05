@@ -1,32 +1,35 @@
 {
-    "ssconfigfile":"/etc/shadowsocks/config.json",
+    "ssconfigfile":"/ss/config.json",
     "sspath":"/bin/systemctl",
     "ssrestartcommand":[
         "restart",
-        "sslocal.service"
+        "cups.service"
     ],
     "ssconfigsectionpath":[
         "servers"
     ],
     "ssserverseditpos":1,
     "sstimeoutdefault":0,
-    "outputfile":"/etc/sskeyparser/parsingresult.json",
+    "outputfile":"./parsingresult.json",
     "links":[
         {
-            "url":"https://t.me/some_channel_with_keys",
+            "url":"https://t.me/s/outlinevpn_ru",
             "mask":[
                 "ss://"
             ],
-            "configcount":3,
+            "configcount":2,
             "parsetoptobot":false 
         },
         {
-            "url":"https://www.some_site_with_keys.com/",
+            "url":"https://t.me/s/keysOutline",
             "mask":[
                 "ss://"
             ],
-            "configcount":1,
-            "parsetoptobot":true 
+            "configcount":2,
+            "parsetoptobot":false
         }
-    ]
+    ],
+    "ipcheckserver":"https://ipinfo.io/",
+    "ipcheckkey":"country",
+    "ipcheckvalue":"RU"
 }
