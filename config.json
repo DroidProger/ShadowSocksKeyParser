@@ -1,5 +1,5 @@
 {
-    "ssconfigfile":"/ss/config.json",
+    "ssconfigfile":"/etc/shadowsocks/config.json",
     "sspath":"/bin/systemctl",
     "ssrestartcommand":[
         "restart",
