@@ -39,7 +39,8 @@ type Config struct {
 	Links               []Link
 	IpCheckServer       string
 	IpCheckKey          string
-	IpCheckValue        string
+	IpCheckBlackList    bool
+	IpCheckValue        []string
 }
 
 type SsConfigs struct {
@@ -121,7 +122,8 @@ func createSsServerConfig(str string) (errstr string) { //, errcode int
 		} else {
 			conf.Server = spstr[:index]
 			//check ip
-			if !isIpValid(config.IpCheckServer, conf.Server, config.IpCheckKey, config.IpCheckValue) {
+			if !isIpValid(config.IpCheckServer, conf.Server, config.IpCheckKey,
+									config.IpCheckValue, config.IpCheckBlackList) {
 				return "Ip is invalid"
 			}
 			//
@@ -398,6 +400,7 @@ func setSsServiceConfig(path string, middle []byte) bool {
 			}
 		}
 	} else {
+		fmt.Println("Ss config file not exists:")
 		return false
 	}
 	return true
