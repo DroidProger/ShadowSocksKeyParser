@@ -170,7 +170,6 @@ I found a few servers wich can get simple request and send json response. To che
 ```
 curl https://ipinfo.io/1.2.3.4
 curl api.2ip.io/1.2.3.4
-curl https://geoapi.info/api/geo?1.2.3.4
 curl https://geo.kamero.ai/api/geo?1.2.3.4
 ```
 In output you can see how it returns country. For example
