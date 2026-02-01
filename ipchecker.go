@@ -4,11 +4,29 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"net"
 	"net/http"
 	"strings"
 )
 
 func isIpValid(site string, ip string, keyName string, value []string, blacklist bool) bool {
+	// check if ip is domain or ip
+	_ip := net.ParseIP(ip)
+	if _ip == nil { //domain
+		ips, err := net.LookupIP(ip)
+		if err != nil {
+			fmt.Println("Unable to resolve server name:", err)
+			return false
+		} else {
+			if ips[0] != nil {
+				ip = ips[0].To16().String()
+				if ip == "" {
+					fmt.Println("Unable to convert server name:", err)
+					return false
+				}
+			}
+		}
+	} //ip
 	request := strings.Builder{}
 	request.WriteString(site)
 	request.WriteString(ip)
